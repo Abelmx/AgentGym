@@ -15,3 +15,7 @@
 
 See detailed per-repo / per-task breakdown:
 - [`l1-detailed-results.md`](l1-detailed-results.md)
+
+Full raw evaluation artifacts for this snapshot are available on the `l1-eval` branch:
+
+- [`results/20260202/` on `l1-eval`](https://github.com/Abelmx/AgentGym/tree/l1-eval/results/20260202)

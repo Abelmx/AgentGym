@@ -36,6 +36,10 @@ AgentGym 是用于评测大语言模型（含多模态大模型）作为 **tool-
 - [`docs/benchmarks/zh-CN/l1-leaderboard.md`](docs/benchmarks/zh-CN/l1-leaderboard.md)
 - [`docs/benchmarks/zh-CN/l1-detailed-results.md`](docs/benchmarks/zh-CN/l1-detailed-results.md)
 
+本次快照对应的**完整评测产物**（可用于复核与二次统计）请见 `l1-eval` 分支：
+
+- [`l1-eval` 分支的 `results/20260202/`](https://github.com/Abelmx/AgentGym/tree/l1-eval/results/20260202)
+
 ---
 
 ## 一次评测会发生什么？

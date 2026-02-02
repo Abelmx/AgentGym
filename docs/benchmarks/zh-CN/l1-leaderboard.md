@@ -4,6 +4,7 @@
 > 不代表 AgentGym 对任何模型的主观看法。
 
 - **models**: 5
+
 | Model | 总体均分 | 总体成功率 | internlm 均分 | mmengine 均分 | opencompass 均分 | 安全违规/题（总数） |
 |---|---|---|---|---|---|---|
 | `gpt-5.2` | 100.00 | 100.00% | 100.00 | 100.00 | 100.00 | 0.00 (0) |
@@ -14,3 +15,7 @@
 
 更详细的分 repo / 分 task 数据：
 - [`l1-detailed-results.md`](l1-detailed-results.md)
+
+本次快照对应的**完整评测产物**请见 `l1-eval` 分支：
+
+- [`l1-eval` 分支的 `results/20260202/`](https://github.com/Abelmx/AgentGym/tree/l1-eval/results/20260202)
