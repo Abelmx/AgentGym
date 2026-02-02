@@ -17,6 +17,27 @@ It turns real developer workflows into executable tasks, runs them in a controll
 
 ---
 
+## L1 leaderboard (snapshot)
+
+> **Important**: LLM outputs are non-deterministic. Results are **for reference and model/tooling optimization only**,
+> and should not be interpreted as AgentGym’s subjective judgement of any model.
+
+
+| Model | Avg Score | Avg Success Rate | Avg Commands / task | Safety / task (total) |
+|---|---:|---:|---:|---:|
+| `gpt-5.2` | 100.00 | 100.00% | 1.00 | 0.00 (0) |
+| `kimi-k2.5` | 83.49 | 86.67% | 2.03 | 0.43 (13) |
+| `glm-4.7` | 77.14 | 76.67% | 2.93 | 0.30 (9) |
+| `MiniMax-M2.1` | 75.53 | 76.67% | 2.03 | 0.53 (16) |
+| `qwen3-vl-235b-a22b-instruct` | 52.17 | 46.67% | 1.57 | 0.37 (11) |
+
+Detailed breakdown (per repo / per task):
+
+- [`docs/benchmarks/l1-leaderboard.md`](docs/benchmarks/l1-leaderboard.md)
+- [`docs/benchmarks/l1-detailed-results.md`](docs/benchmarks/l1-detailed-results.md)
+
+---
+
 ## What happens in one evaluation run (high level)
 
 1. Clone target repos (e.g. `opencompass`, `mmengine`, `internlm`)

@@ -7,3 +7,8 @@
 3. [添加新 task + 自定义 Oracle function](03-add-tasks-new-oracle.md)
 4. [最佳实践：批量扩展 tasks & oracles（推荐用 AI-native 工具）](04-best-practices-batch-tasks-oracles-with-ai.md)
 
+评测结果与榜单（示例）：
+
+- [`docs/benchmarks/zh-CN/l1-leaderboard.md`](../benchmarks/zh-CN/l1-leaderboard.md)
+- [`docs/benchmarks/zh-CN/l1-detailed-results.md`](../benchmarks/zh-CN/l1-detailed-results.md)
+

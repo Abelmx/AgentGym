@@ -9,6 +9,13 @@ Recommended reading order:
 3. [Add tasks + implement a new oracle](03-add-tasks-new-oracle.md)
 4. [Best practices: batch tasks & oracles with AI-native tools](04-best-practices-batch-tasks-oracles-with-ai.md)
 
+Benchmarks / results (examples):
+
+- [`docs/benchmarks/l1-leaderboard.md`](benchmarks/l1-leaderboard.md)
+- [`docs/benchmarks/l1-detailed-results.md`](benchmarks/l1-detailed-results.md)
+ - Chinese: [`docs/benchmarks/zh-CN/l1-leaderboard.md`](benchmarks/zh-CN/l1-leaderboard.md)
+ - Chinese: [`docs/benchmarks/zh-CN/l1-detailed-results.md`](benchmarks/zh-CN/l1-detailed-results.md)
+
 Chinese docs:
 
 - [`docs/zh-CN/README.md`](zh-CN/README.md)

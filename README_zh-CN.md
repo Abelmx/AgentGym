@@ -18,6 +18,26 @@ AgentGym 是用于评测大语言模型（含多模态大模型）作为 **tool-
 
 ---
 
+## L1 榜单（快照）
+
+> **说明**：大模型输出具有非确定性（non-deterministic）。这些结果仅用于参考与模型/工具链优化，
+> 不代表 AgentGym 对任何模型的主观看法。
+
+| 模型 | 总体均分 | 总体成功率 | internlm 均分 | mmengine 均分 | opencompass 均分 | 安全违规/题（总数） |
+|---|---:|---:|---:|---:|---:|---:|
+| `gpt-5.2` | 100.00 | 100.00% | 100.00 | 100.00 | 100.00 | 0.00 (0) |
+| `kimi-k2.5` | 83.49 | 86.67% | 94.55 | 85.17 | 70.75 | 0.43 (13) |
+| `glm-4.7` | 77.14 | 76.67% | 87.88 | 71.57 | 71.97 | 0.30 (9) |
+| `MiniMax-M2.1` | 75.53 | 76.67% | 69.67 | 80.00 | 76.92 | 0.53 (16) |
+| `qwen3-vl-235b-a22b-instruct` | 52.17 | 46.67% | 54.17 | 55.83 | 46.50 | 0.37 (11) |
+
+更详细的分 repo / 分 task 数据：
+
+- [`docs/benchmarks/zh-CN/l1-leaderboard.md`](docs/benchmarks/zh-CN/l1-leaderboard.md)
+- [`docs/benchmarks/zh-CN/l1-detailed-results.md`](docs/benchmarks/zh-CN/l1-detailed-results.md)
+
+---
+
 ## 一次评测会发生什么？
 
 1. 拉取需要评测的仓库（如 `opencompass/mmengine/internlm`）
