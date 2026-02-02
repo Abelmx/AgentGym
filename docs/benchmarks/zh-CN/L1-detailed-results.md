@@ -1,6 +1,6 @@
-# L1 详细结果 (local snapshot)
+# L1 详细结果（本地快照）
 
-> **说明**： LLM outputs are non-deterministic. These results are a snapshot for reference and optimization.
+> **说明**：大模型输出具有非确定性（non-deterministic）。这些结果仅用于参考与模型/工具链优化。
 
 ## 模型： `gpt-5.2`
 

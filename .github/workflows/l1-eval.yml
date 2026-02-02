@@ -1,4 +1,4 @@
-name: l1-eval
+name: L1-eval
 
 on:
   workflow_dispatch:
@@ -73,7 +73,7 @@ jobs:
       - name: Upload run artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: l1-eval-${{ inputs.model_name }}
+          name: L1-eval-${{ inputs.model_name }}
           path: |
             ${{ env.RUN_DIR }}/results
             ${{ env.RUN_DIR }}/artifacts
@@ -91,7 +91,7 @@ jobs:
             - Repos: `${{ inputs.repos }}`
             - Run dir: `${{ env.RUN_DIR }}`
             - Base branch: `${{ github.ref_name }}`
-          branch: l1-eval/${{ inputs.model_name }}
+          branch: L1-eval/${{ inputs.model_name }}
           add-paths: |
             results/**
 

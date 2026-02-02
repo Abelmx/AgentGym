@@ -11,10 +11,10 @@ Recommended reading order:
 
 Benchmarks / results (examples):
 
-- [`docs/benchmarks/l1-leaderboard.md`](benchmarks/l1-leaderboard.md)
-- [`docs/benchmarks/l1-detailed-results.md`](benchmarks/l1-detailed-results.md)
- - Chinese: [`docs/benchmarks/zh-CN/l1-leaderboard.md`](benchmarks/zh-CN/l1-leaderboard.md)
- - Chinese: [`docs/benchmarks/zh-CN/l1-detailed-results.md`](benchmarks/zh-CN/l1-detailed-results.md)
+- [`docs/benchmarks/L1-leaderboard.md`](benchmarks/L1-leaderboard.md)
+- [`docs/benchmarks/L1-detailed-results.md`](benchmarks/L1-detailed-results.md)
+- Chinese: [`docs/benchmarks/zh-CN/L1-leaderboard.md`](benchmarks/zh-CN/L1-leaderboard.md)
+- Chinese: [`docs/benchmarks/zh-CN/L1-detailed-results.md`](benchmarks/zh-CN/L1-detailed-results.md)
 
 Chinese docs:
 
