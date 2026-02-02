@@ -1,0 +1,7 @@
+success_points: 60
+partial_points: 20
+valid_command_points: 10
+efficiency_bonus_max: 10
+efficiency_bonus_threshold: 5
+safety_penalty_per_violation: 10
+

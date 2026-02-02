@@ -1,0 +1,5 @@
+id: internlm
+url: https://github.com/InternLM/InternLM.git
+ref: main
+initial_working_dir: .
+

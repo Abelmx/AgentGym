@@ -1,0 +1,48 @@
+id: mmengine_task_009
+repo: mmengine
+difficulty: easy
+initial_working_dir: .
+instruction: 'Find how many entries are in the top-level "docs" directory. If it doesn''t
+  exist, return 0. Write to eval_artifacts/answer.json: {"docs_top_entries": <int>}
+  .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: docs_top_entries
+  type: int
+  oracle:
+    fn: dir_top_entry_count
+    args:
+      path: docs
+      exclude_hidden: true
+max_commands: 12
+timeout_seconds: 180

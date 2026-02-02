@@ -1,0 +1,5 @@
+id: opencompass
+url: https://github.com/open-compass/OpenCompass.git
+ref: main
+initial_working_dir: .
+

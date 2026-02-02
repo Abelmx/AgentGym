@@ -1,0 +1,48 @@
+id: internlm_task_004
+repo: internlm
+difficulty: easy
+initial_working_dir: .
+instruction: 'Find the relative path of the largest file (by bytes) in the repo (excluding
+  .git). Write to eval_artifacts/answer.json: {"largest_file": {"path": <string>,
+  "size": <int>}} .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: largest_file
+  type: json
+  oracle:
+    fn: largest_file
+    args:
+      exclude_dirs:
+      - .git
+max_commands: 12
+timeout_seconds: 180

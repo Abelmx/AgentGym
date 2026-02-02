@@ -1,0 +1,48 @@
+id: mmengine_task_007
+repo: mmengine
+difficulty: easy
+initial_working_dir: .
+instruction: 'Determine whether a LICENSE file exists at repo root (LICENSE or LICENSE.md).
+  Write to eval_artifacts/answer.json: {"has_license": <true|false>} .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: has_license
+  type: json
+  oracle:
+    fn: has_license_file
+    args:
+      paths:
+      - LICENSE
+      - LICENSE.md
+max_commands: 12
+timeout_seconds: 180

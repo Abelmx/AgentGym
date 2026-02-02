@@ -1,0 +1,31 @@
+allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+

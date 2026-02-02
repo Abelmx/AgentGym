@@ -1,0 +1,35 @@
+{
+  "session_name": "agentgym-l1",
+  "repo_root": ".",
+  "runs_root": "~/sandbox/runs",
+  "repos": ["opencompass", "mmengine", "internlm"],
+  "task_set": "l1",
+  "dry_run": false,
+  "models": [
+    {
+      "model_id": "qwen3-vl-235b-a22b-instruct"
+    },
+    {
+      "model_id": "kimi-k2.5",
+      "temperature": 1.0,
+      "include_reasoning_content": true
+    },
+    {
+      "model_id": "glm-4.7"
+    },
+    {
+      "model_id": "MiniMax-M2.1"
+    },
+    {
+      "model_id": "intern-s1",
+      "api_key": "INTERN_S1_API_KEY",
+      "base_url": "https://chat.intern-ai.org.cn/api/v1/"
+    },
+    {
+      "model_id": "intern_s1_pro",
+      "api_key": "INTERN_S1_PRO_API_KEY",
+      "base_url": "http://s-20260107171112-bznv7.ailab-vlminfer.pjh-service.org.cn/v1/"
+    }
+  ]
+}
+

@@ -1,0 +1,9 @@
+[project]
+name = "l1-terminal-eval"
+version = "0.1.0"
+description = "MVP: Evaluate LLM terminal behavior via OpenAI tool calls."
+requires-python = ">=3.8"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+

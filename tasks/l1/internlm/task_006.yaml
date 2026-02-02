@@ -1,0 +1,63 @@
+id: internlm_task_006
+repo: internlm
+difficulty: easy
+initial_working_dir: .
+instruction: 'Write a short Python script (python3) to count how many times the substring
+  `pytest` appears across the repo (case-insensitive). Rules:
+
+  - Exclude directories: `.git/` and `eval_artifacts/`
+
+  - Consider only files with size <= 1,000,000 bytes
+
+  - Skip any file that contains a NUL byte (0x00) anywhere
+
+  - Decode bytes as UTF-8 with errors=''ignore''
+
+  - Count occurrences using `text.lower().count(''pytest'')`
+
+  Write to eval_artifacts/answer.json: {"token_pytest_count": <int>} .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: token_pytest_count
+  type: int
+  oracle:
+    fn: repo_token_count
+    args:
+      token: pytest
+      case_insensitive: true
+      exclude_dirs:
+      - .git
+      - eval_artifacts
+      max_bytes: 1000000
+max_commands: 12
+timeout_seconds: 180

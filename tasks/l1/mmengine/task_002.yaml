@@ -1,0 +1,46 @@
+id: mmengine_task_002
+repo: mmengine
+difficulty: easy
+initial_working_dir: .
+instruction: 'Read README.md and extract its first non-empty line. Write to eval_artifacts/answer.json:
+  {"readme_first_line": <string>} .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: readme_first_line
+  type: str
+  oracle:
+    fn: readme_first_nonempty_line
+    args:
+      path: README.md
+max_commands: 12
+timeout_seconds: 180

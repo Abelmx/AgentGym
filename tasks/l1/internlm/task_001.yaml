@@ -1,0 +1,51 @@
+id: internlm_task_001
+repo: internlm
+difficulty: easy
+initial_working_dir: .
+instruction: 'Count the number of visible (non-dot) top-level entries in the repo
+  root, excluding `.git/` and `eval_artifacts/` if present. This should match what
+  you would see from `ls -1` after removing `eval_artifacts`. Write to eval_artifacts/answer.json:
+  {"top_level_entries": <int>} .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: top_level_entries
+  type: int
+  oracle:
+    fn: top_level_entry_count
+    args:
+      exclude:
+      - .git
+      - eval_artifacts
+      exclude_hidden: true
+max_commands: 12
+timeout_seconds: 180

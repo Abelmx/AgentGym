@@ -1,0 +1,97 @@
+name: l1-eval
+
+on:
+  workflow_dispatch:
+    inputs:
+      model_name:
+        description: "OpenAI-compatible model name"
+        required: true
+        type: string
+      base_url:
+        description: "OpenAI-compatible base url (optional)"
+        required: false
+        default: ""
+        type: string
+      repos:
+        description: "Comma-separated repo ids to evaluate"
+        required: false
+        default: "opencompass,mmengine,internlm"
+        type: string
+      temperature:
+        description: "Optional: sampling temperature"
+        required: false
+        default: "0"
+        type: string
+      max_output_tokens:
+        description: "Optional: max output tokens"
+        required: false
+        default: "4096"
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run evaluation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set -euo pipefail
+          python -m evaluator.run \
+            --repos "${{ inputs.repos }}" \
+            --model "${{ inputs.model_name }}" \
+            --base-url "${{ inputs.base_url }}" \
+            --temperature "${{ inputs.temperature }}" \
+            --max-output-tokens "${{ inputs.max_output_tokens }}" \
+            --runs-root runs
+
+          RUN_DIR="$(ls -1dt runs/* | head -n 1)"
+          echo "RUN_DIR=$RUN_DIR" >> "$GITHUB_ENV"
+
+          python scripts/publish_results.py \
+            --run-dir "$RUN_DIR" \
+            --out-root results \
+            --model-name "${{ inputs.model_name }}"
+
+      - name: Upload run artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: l1-eval-${{ inputs.model_name }}
+          path: |
+            ${{ env.RUN_DIR }}/results
+            ${{ env.RUN_DIR }}/artifacts
+
+      - name: Create pull request with results
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(results): add L1 eval results for ${{ inputs.model_name }}"
+          title: "L1 eval results: ${{ inputs.model_name }}"
+          base: ${{ github.ref_name }}
+          body: |
+            This PR adds L1 terminal evaluation results produced by GitHub Actions.
+
+            - Model: `${{ inputs.model_name }}`
+            - Repos: `${{ inputs.repos }}`
+            - Run dir: `${{ env.RUN_DIR }}`
+            - Base branch: `${{ github.ref_name }}`
+          branch: l1-eval/${{ inputs.model_name }}
+          add-paths: |
+            results/**
+

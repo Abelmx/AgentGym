@@ -1,0 +1,5 @@
+id: mmengine
+url: https://github.com/open-mmlab/mmengine.git
+ref: main
+initial_working_dir: .
+

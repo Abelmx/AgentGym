@@ -1,0 +1,67 @@
+id: internlm_task_010
+repo: internlm
+difficulty: easy
+initial_working_dir: .
+instruction: 'Create a short structured summary file at eval_artifacts/answer.md using
+  EXACTLY these keys (one per line):
+
+  repo_id: <repo_id>
+
+  top_level_entries: <int>
+
+  has_license: <true|false>
+
+
+  Definitions:
+
+  - `top_level_entries`: same as task_001 (visible/non-dot entries in repo root excluding
+  `.git/` and `eval_artifacts/`).
+
+  - `has_license`: true iff LICENSE or LICENSE.md exists at repo root.
+
+  '
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: answer_md_valid
+  type: oracle_bool
+  oracle:
+    fn: answer_md_kv_matches
+    args:
+      path: eval_artifacts/answer.md
+      repo_id: internlm
+      exclude_top_level:
+      - .git
+      - eval_artifacts
+      exclude_hidden: true
+max_commands: 12
+timeout_seconds: 180

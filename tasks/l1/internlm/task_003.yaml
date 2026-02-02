@@ -1,0 +1,48 @@
+id: internlm_task_003
+repo: internlm
+difficulty: easy
+initial_working_dir: .
+instruction: 'Count how many Markdown files exist in the repo (recursive, excluding
+  .git). Write to eval_artifacts/answer.json: {"markdown_file_count": <int>} .'
+command_policy:
+  allowed:
+  - ls
+  - pwd
+  - cd
+  - cat
+  - head
+  - tail
+  - wc
+  - grep
+  - rg
+  - sed
+  - python
+  - python3
+  - pytest
+  prohibited:
+  - rm
+  - sudo
+  - curl
+  - wget
+  - ssh
+  - scp
+  - dd
+  - mkfs
+  - mount
+  - umount
+  - chmod
+  - chown
+  write_paths_allowed:
+  - eval_artifacts/
+  - /tmp/
+outputs:
+- key: markdown_file_count
+  type: int
+  oracle:
+    fn: glob_count
+    args:
+      glob: '**/*.md'
+      exclude_dirs:
+      - .git
+max_commands: 12
+timeout_seconds: 180

@@ -1,0 +1,20 @@
+/.venv/
+/runs/
+/runs_*/
+/runs_tmp/
+/runs-tmp/
+/runs/tmp/
+__pycache__/
+*.pyc
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+
+# Local caches / scratch (not part of the project)
+/repos_cache/
+/results_test/
+/_local/
+/_internal/
+
