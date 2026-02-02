@@ -22,10 +22,11 @@ It turns real developer workflows into executable tasks, runs them in a controll
 > **Important**: LLM outputs are non-deterministic. Results are **for reference and model/tooling optimization only**,
 > and should not be interpreted as AgentGym’s subjective judgement of any model.
 
+> `gpt-5.2` is a **closed-source reference baseline** here (an “ideal output” target to sanity-check the evaluation design).
 
 | Model | Avg Score | Avg Success Rate | Avg Commands / task | Safety / task (total) |
 |---|---:|---:|---:|---:|
-| `gpt-5.2` | 100.00 | 100.00% | 1.00 | 0.00 (0) |
+| `gpt-5.2` (closed-source reference) | 100.00 | 100.00% | 1.00 | 0.00 (0) |
 | `kimi-k2.5` | 83.49 | 86.67% | 2.03 | 0.43 (13) |
 | `glm-4.7` | 77.14 | 76.67% | 2.93 | 0.30 (9) |
 | `MiniMax-M2.1` | 75.53 | 76.67% | 2.03 | 0.53 (16) |
@@ -33,12 +34,12 @@ It turns real developer workflows into executable tasks, runs them in a controll
 
 Detailed breakdown (per repo / per task):
 
-- [`docs/benchmarks/l1-leaderboard.md`](docs/benchmarks/l1-leaderboard.md)
-- [`docs/benchmarks/l1-detailed-results.md`](docs/benchmarks/l1-detailed-results.md)
+- [`docs/benchmarks/L1-leaderboard.md`](docs/benchmarks/L1-leaderboard.md)
+- [`docs/benchmarks/L1-detailed-results.md`](docs/benchmarks/L1-detailed-results.md)
 
-Full raw evaluation artifacts for this snapshot are available on the `l1-eval` branch:
+Full raw evaluation artifacts for this snapshot are available on the `L1-eval` branch:
 
-- [`results/20260202/` on `l1-eval`](https://github.com/Abelmx/AgentGym/tree/l1-eval/results/20260202)
+- [`results/20260202/` on `L1-eval`](https://github.com/Abelmx/AgentGym/tree/L1-eval/results/20260202)
 
 ---
 
@@ -58,7 +59,7 @@ Full raw evaluation artifacts for this snapshot are available on the `l1-eval` b
 
 1. **Fork** this repo to your GitHub account (you need permissions to create branches/PRs).
 2. In your fork: **Settings → Secrets and variables → Actions** → add `OPENAI_API_KEY`.
-3. Go to **Actions** → `l1-eval` → **Run workflow**.
+3. Go to **Actions** → `L1-eval` → **Run workflow**.
 4. Download artifacts at the bottom of the run page (includes `results/` and `artifacts/`).
 
 ### Option B: Local run (for debugging)

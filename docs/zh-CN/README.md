@@ -9,6 +9,6 @@
 
 评测结果与榜单（示例）：
 
-- [`docs/benchmarks/zh-CN/l1-leaderboard.md`](../benchmarks/zh-CN/l1-leaderboard.md)
-- [`docs/benchmarks/zh-CN/l1-detailed-results.md`](../benchmarks/zh-CN/l1-detailed-results.md)
+- [`docs/benchmarks/zh-CN/L1-leaderboard.md`](../benchmarks/zh-CN/L1-leaderboard.md)
+- [`docs/benchmarks/zh-CN/L1-detailed-results.md`](../benchmarks/zh-CN/L1-detailed-results.md)
 

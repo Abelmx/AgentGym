@@ -214,26 +214,35 @@ def build_docs(*, runs: List[RunInfo], out_dir: Path, title_suffix: str, runs_ro
     )
 
     # Leaderboard rows (avoid duplicating README; include per-repo scores).
-    preferred_repo_order = ["internlm", "mmengine", "opencompass"]
-    lb_rows: List[List[str]] = []
+    def repo_score(repo_stats: Dict[str, Dict[str, Any]], repo_id: str) -> str:
+        if repo_id not in repo_stats:
+            return "-"
+        return f'{float(repo_stats[repo_id]["avg_score"]):.2f}'
+
+    def model_cell_en(model_id: str) -> str:
+        if model_id == "gpt-5.2":
+            return "`gpt-5.2` (closed-source reference)"
+        return f"`{model_id}`"
+
+    def model_cell_zh(model_id: str) -> str:
+        if model_id == "gpt-5.2":
+            return "`gpt-5.2`（闭源参考标杆）"
+        return f"`{model_id}`"
+
+    lb_rows_en: List[List[str]] = []
+    lb_rows_zh: List[List[str]] = []
     for model_id, s in sorted_models:
         repo_stats = model_repo_summaries.get(model_id, {})
-        def repo_score(repo_id: str) -> str:
-            if repo_id not in repo_stats:
-                return "-"
-            return f'{float(repo_stats[repo_id]["avg_score"]):.2f}'
-
-        lb_rows.append(
-            [
-                f"`{model_id}`",
-                f'{s["avg_score"]:.2f}',
-                _fmt_pct(float(s["success_rate"])),
-                repo_score("internlm"),
-                repo_score("mmengine"),
-                repo_score("opencompass"),
-                f'{float(s["safety_per_task"]):.2f} ({s["safety_total"]})',
-            ]
-        )
+        common = [
+            f'{s["avg_score"]:.2f}',
+            _fmt_pct(float(s["success_rate"])),
+            repo_score(repo_stats, "internlm"),
+            repo_score(repo_stats, "mmengine"),
+            repo_score(repo_stats, "opencompass"),
+            f'{float(s["safety_per_task"]):.2f} ({s["safety_total"]})',
+        ]
+        lb_rows_en.append([model_cell_en(model_id), *common])
+        lb_rows_zh.append([model_cell_zh(model_id), *common])
 
     leaderboard_md = "\n".join(
         [
@@ -241,6 +250,8 @@ def build_docs(*, runs: List[RunInfo], out_dir: Path, title_suffix: str, runs_ro
             "",
             "> **Important**: LLM outputs are non-deterministic. Results are **for reference and model/tooling optimization only**,",
             "> and should not be interpreted as AgentGym’s subjective judgement of any model.",
+            ">",
+            "> `gpt-5.2` is a **closed-source reference baseline** here (an “ideal output” target to sanity-check the evaluation design).",
             "",
             f"- **models**: {len(sorted_models)} (some models may be excluded; e.g. `intern-s1-pro` beta results are not shown)",
             "",
@@ -254,11 +265,14 @@ def build_docs(*, runs: List[RunInfo], out_dir: Path, title_suffix: str, runs_ro
                     "Avg Score (opencompass)",
                     "Safety / task (total)",
                 ],
-                rows=lb_rows,
+                rows=lb_rows_en,
             ),
             "",
             "See detailed per-repo / per-task breakdown:",
-            f"- [`l1-detailed-results.md`](l1-detailed-results.md)",
+            f"- [`L1-detailed-results.md`](L1-detailed-results.md)",
+            "",
+            "Full raw evaluation artifacts for this snapshot are available on the `L1-eval` branch:",
+            "- [`results/20260202/` on `L1-eval`](https://github.com/Abelmx/AgentGym/tree/L1-eval/results/20260202)",
             "",
         ]
     )
@@ -364,15 +378,15 @@ def build_docs(*, runs: List[RunInfo], out_dir: Path, title_suffix: str, runs_ro
 
     details_md = "\n".join(detail_lines).rstrip() + "\n"
 
-    leaderboard_path = out_dir / "l1-leaderboard.md"
-    details_path = out_dir / "l1-detailed-results.md"
+    leaderboard_path = out_dir / "L1-leaderboard.md"
+    details_path = out_dir / "L1-detailed-results.md"
     _write_text(leaderboard_path, leaderboard_md)
     _write_text(details_path, details_md)
 
     # Also write a Chinese version under out_dir/zh-CN/ (tables remain the same; headings/disclaimer localized).
     out_dir_zh = out_dir / "zh-CN"
-    leaderboard_path_zh = out_dir_zh / "l1-leaderboard.md"
-    details_path_zh = out_dir_zh / "l1-detailed-results.md"
+    leaderboard_path_zh = out_dir_zh / "L1-leaderboard.md"
+    details_path_zh = out_dir_zh / "L1-detailed-results.md"
 
     leaderboard_md_zh = "\n".join(
         [
@@ -380,6 +394,8 @@ def build_docs(*, runs: List[RunInfo], out_dir: Path, title_suffix: str, runs_ro
             "",
             "> **说明**：大模型输出具有非确定性（non-deterministic）。这些结果仅用于参考与模型/工具链优化，",
             "> 不代表 AgentGym 对任何模型的主观看法。",
+            ">",
+            "> 其中 `gpt-5.2` 作为**闭源参考标杆**（“理想输出”的参考线），用于帮助校验评测流程与题目设计是否合理。",
             "",
             f"- **models**: {len(sorted_models)}（部分模型可能被排除；例如 `intern-s1-pro` beta/未开源结果暂不展示）",
             "",
@@ -393,11 +409,14 @@ def build_docs(*, runs: List[RunInfo], out_dir: Path, title_suffix: str, runs_ro
                     "opencompass 均分",
                     "安全违规/题（总数）",
                 ],
-                rows=lb_rows,
+                rows=lb_rows_zh,
             ),
             "",
             "更详细的分 repo / 分 task 数据：",
-            f"- [`l1-detailed-results.md`](l1-detailed-results.md)",
+            f"- [`L1-detailed-results.md`](L1-detailed-results.md)",
+            "",
+            "本次快照对应的**完整评测产物**请见 `L1-eval` 分支：",
+            "- [`L1-eval` 分支的 `results/20260202/`](https://github.com/Abelmx/AgentGym/tree/L1-eval/results/20260202)",
             "",
         ]
     )
