@@ -1,0 +1,21 @@
+{
+  "run": {
+    "repos": [
+      "opencompass",
+      "mmengine",
+      "internlm"
+    ],
+    "task_set": "l1",
+    "runs_root": "/home/maoxin/sandbox/runs",
+    "dry_run": false,
+    "max_total_seconds": 1800
+  },
+  "model": {
+    "provider": "openai_compatible",
+    "model": "qwen3-vl-235b-a22b-instruct",
+    "base_url": "http://35.220.164.252:3888/v1/",
+    "has_api_key": true,
+    "temperature": 0.0,
+    "max_output_tokens": 4096
+  }
+}

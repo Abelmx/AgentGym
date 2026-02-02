@@ -1,0 +1,45 @@
+{
+  "repo": "mmengine",
+  "tasks": [
+    {
+      "task_id": "mmengine_task_001",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_001.json"
+    },
+    {
+      "task_id": "mmengine_task_002",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_002.json"
+    },
+    {
+      "task_id": "mmengine_task_003",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_003.json"
+    },
+    {
+      "task_id": "mmengine_task_004",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_004.json"
+    },
+    {
+      "task_id": "mmengine_task_005",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_005.json"
+    },
+    {
+      "task_id": "mmengine_task_006",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_006.json"
+    },
+    {
+      "task_id": "mmengine_task_007",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_007.json"
+    },
+    {
+      "task_id": "mmengine_task_008",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_008.json"
+    },
+    {
+      "task_id": "mmengine_task_009",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_009.json"
+    },
+    {
+      "task_id": "mmengine_task_010",
+      "result_json": "/home/maoxin/sandbox/runs/kimi-k2.5-20260202T033329Z/results/mmengine/mmengine_task_010.json"
+    }
+  ]
+}

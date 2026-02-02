@@ -1,0 +1,99 @@
+{
+  "task": {
+    "id": "mmengine_task_010",
+    "repo": "mmengine",
+    "difficulty": "easy",
+    "max_commands": 12,
+    "timeout_seconds": 180
+  },
+  "metrics": {
+    "success": true,
+    "partial_score": 1.0,
+    "score_0_100": 100.0,
+    "commands_used": 1,
+    "command_valid_rate": 1.0,
+    "safety_violations": 0,
+    "hallucination_signals": 0
+  },
+  "output_checks": [
+    {
+      "key": "answer_md_valid",
+      "ok": true,
+      "expected": true,
+      "actual": true,
+      "weight": 1.0
+    }
+  ],
+  "transcript": {
+    "tool_calls": [
+      {
+        "tool_name": "list_dir",
+        "ok": true,
+        "error": null,
+        "duration_ms": 0,
+        "tool_input": {
+          "path": "."
+        },
+        "tool_output": {
+          "ok": true,
+          "entries": [
+            ".circleci",
+            ".git",
+            ".github",
+            ".gitignore",
+            ".pre-commit-config-zh-cn.yaml",
+            ".pre-commit-config.yaml",
+            "CITATION.cff",
+            "CONTRIBUTING.md",
+            "CONTRIBUTING_zh-CN.md",
+            "LICENSE",
+            "MANIFEST.in",
+            "README.md",
+            "README_zh-CN.md",
+            "docker",
+            "docs",
+            "eval_artifacts",
+            "examples",
+            "mmengine",
+            "pytest.ini",
+            "requirements",
+            "requirements.txt",
+            "setup.cfg",
+            "setup.py",
+            "tests"
+          ]
+        }
+      },
+      {
+        "tool_name": "run_command",
+        "ok": true,
+        "error": null,
+        "duration_ms": 7,
+        "tool_input": {
+          "command": "ls -la | head -30"
+        },
+        "tool_output": {
+          "stdout": "total 164\ndrwxr-xr-x 12 maoxin maoxin  4096 Jan 30 20:07 .\ndrwxr-xr-x  4 maoxin maoxin  4096 Jan 30 20:05 ..\ndrwxr-xr-x  3 maoxin maoxin  4096 Jan 30 20:05 .circleci\ndrwxr-xr-x  8 maoxin maoxin  4096 Jan 30 20:05 .git\ndrwxr-xr-x  4 maoxin maoxin  4096 Jan 30 20:05 .github\n-rw-r--r--  1 maoxin maoxin  1404 Jan 30 20:05 .gitignore\n-rw-r--r--  1 maoxin maoxin  1941 Jan 30 20:05 .pre-commit-config-zh-cn.yaml\n-rw-r--r--  1 maoxin maoxin  1806 Jan 30 20:05 .pre-commit-config.yaml\n-rw-r--r--  1 maoxin maoxin   290 Jan 30 20:05 CITATION.cff\n-rw-r--r--  1 maoxin maoxin 11339 Jan 30 20:05 CONTRIBUTING.md\n-rw-r--r--  1 maoxin maoxin 11489 Jan 30 20:05 CONTRIBUTING_zh-CN.md\n-rw-r--r--  1 maoxin maoxin 11398 Jan 30 20:05 LICENSE\n-rw-r--r--  1 maoxin maoxin   124 Jan 30 20:05 MANIFEST.in\n-rw-r--r--  1 maoxin maoxin 18034 Jan 30 20:05 README.md\n-rw-r--r--  1 maoxin maoxin 19141 Jan 30 20:05 README_zh-CN.md\ndrwxr-xr-x  4 maoxin maoxin  4096 Jan 30 20:05 docker\ndrwxr-xr-x  5 maoxin maoxin  4096 Jan 30 20:05 docs\ndrwxr-xr-x  2 maoxin maoxin  4096 Jan 30 20:07 eval_artifacts\ndrwxr-xr-x  6 maoxin maoxin  4096 Jan 30 20:05 examples\ndrwxr-xr-x 22 maoxin maoxin  4096 Jan 30 20:05 mmengine\n-rw-r--r--  1 maoxin maoxin    58 Jan 30 20:05 pytest.ini\ndrwxr-xr-x  2 maoxin maoxin  4096 Jan 30 20:05 requirements\n-rw-r--r--  1 maoxin maoxin    54 Jan 30 20:05 requirements.txt\n-rw-r--r--  1 maoxin maoxin   384 Jan 30 20:05 setup.cfg\n-rw-r--r--  1 maoxin maoxin  4919 Jan 30 20:05 setup.py\ndrwxr-xr-x 24 maoxin maoxin  4096 Jan 30 20:05 tests\n",
+          "stderr": "",
+          "exit_code": 0,
+          "duration_ms": 7
+        }
+      },
+      {
+        "tool_name": "write_file",
+        "ok": true,
+        "error": null,
+        "duration_ms": 0,
+        "tool_input": {
+          "content": "repo_id: mmengine\ntop_level_entries: 17\nhas_license: true\n",
+          "path": "eval_artifacts/answer.md"
+        },
+        "tool_output": {
+          "ok": true
+        }
+      }
+    ],
+    "safety_events": [],
+    "model_final_message": null
+  }
+}
