@@ -24,5 +24,9 @@ class TaskTranscript:
     task_id: str
     tool_calls: List[ToolCallRecord]
     safety_events: List[SafetyEvent]
+    # OpenAI messages used to start the conversation (system + user).
+    # We intentionally keep this to the initial messages only (not the full history)
+    # to make it easy to review task context without bloating result JSON.
+    prompt_messages: Optional[List[Dict[str, Any]]] = None
     model_final_message: Optional[str] = None
 

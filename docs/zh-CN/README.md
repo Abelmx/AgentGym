@@ -6,6 +6,7 @@
 2. [添加新 task（复用现有 oracle）](02-add-tasks-existing-oracles.md)
 3. [添加新 task + 自定义 Oracle function](03-add-tasks-new-oracle.md)
 4. [最佳实践：批量扩展 tasks & oracles（推荐用 AI-native 工具）](04-best-practices-batch-tasks-oracles-with-ai.md)
+5. [计分规则：0–100 分怎么计算？如何调整权重占比？](05-scoring-rules.md)
 
 评测结果与榜单（示例）：
 

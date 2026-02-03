@@ -8,6 +8,7 @@ Recommended reading order:
 2. [Add tasks using existing oracles](02-add-tasks-existing-oracles.md)
 3. [Add tasks + implement a new oracle](03-add-tasks-new-oracle.md)
 4. [Best practices: batch tasks & oracles with AI-native tools](04-best-practices-batch-tasks-oracles-with-ai.md)
+5. [Scoring rules (0–100) + how to tune weights](05-scoring-rules.md)
 
 Benchmarks / results (examples):
 
