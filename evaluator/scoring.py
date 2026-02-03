@@ -138,6 +138,12 @@ def write_task_result_json(path: Path, *, task: TaskSpec, score: TaskScore, tran
             "difficulty": task.difficulty,
             "max_commands": task.max_commands,
             "timeout_seconds": task.timeout_seconds,
+            "instruction": task.instruction,
+            "command_policy": {
+                "allowed": list(task.command_policy.allowed),
+                "prohibited": list(task.command_policy.prohibited),
+                "write_paths_allowed": list(task.command_policy.write_paths_allowed),
+            },
         },
         "metrics": {
             "success": score.success,
@@ -153,6 +159,7 @@ def write_task_result_json(path: Path, *, task: TaskSpec, score: TaskScore, tran
             for c in score.output_checks
         ],
         "transcript": {
+            "prompt_messages": transcript.prompt_messages,
             "tool_calls": [
                 {
                     "tool_name": tc.tool_name,

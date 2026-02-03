@@ -18,6 +18,165 @@ AgentGym 是用于评测大语言模型（含多模态大模型）作为 **tool-
 
 ---
 
+## 一次评测会发生什么？
+
+![AgentGym 工作流概览](docs/assets/agentgym_intro.png)
+
+1. 拉取需要评测的仓库（如 `opencompass/mmengine/internlm`）
+2. 逐题运行：模型只能通过工具调用执行 terminal 命令、读取文件、写入答案
+3. Oracle 自动判分：对照预定义规则计算期望结果，并判断模型输出是否匹配
+4. 生成结果与产物：
+   - `REPORT.md`：汇总报告（repo 维度、task 维度）
+   - 每题 `*.json`：结构化结果
+   - 每题 artifacts：模型写出的 `answer.json` / `answer.md` 等
+5.（可选，推荐）在 GitHub Actions 中自动创建 PR，把结果写回到你指定的分支
+
+<details>
+<summary><strong>示例（单题）：Task 样例（instruction + command_policy）</strong></summary>
+
+下面以同一题 `mmengine_task_001` 为例：
+
+```json
+{
+  "id": "mmengine_task_001",
+  "repo": "mmengine",
+  "instruction": "Count the number of visible (non-dot) top-level entries in the repo root, excluding `.git/` and `eval_artifacts/` if present. This should match what you would see from `ls -1` after removing `eval_artifacts`. Write to eval_artifacts/answer.json: {\"top_level_entries\": <int>} .",
+  "command_policy": {
+    "allowed": ["ls", "pwd", "cd", "cat", "head", "tail", "wc", "grep", "rg", "sed", "python", "python3", "pytest"],
+    "prohibited": ["rm", "sudo", "curl", "wget", "ssh", "scp", "dd", "mkfs", "mount", "umount", "chmod", "chown"],
+    "write_paths_allowed": ["eval_artifacts/", "/tmp/"]
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><strong>示例：沙箱内可用工具列表（OpenAI tools 格式）</strong></summary>
+
+AgentGym 暴露的工具集合（OpenAI tool schema 风格）：
+
+```json
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "run_command",
+      "description": "Run a terminal command in the repo workspace.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "command": { "type": "string" },
+          "cwd": { "type": "string", "nullable": true },
+          "timeout_seconds": { "type": "integer", "nullable": true }
+        },
+        "required": ["command"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "read_file",
+      "description": "Read a UTF-8 text file under the repo root.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "max_bytes": { "type": "integer", "nullable": true }
+        },
+        "required": ["path"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "list_dir",
+      "description": "List directory entries under the repo root.",
+      "parameters": {
+        "type": "object",
+        "properties": { "path": { "type": "string" } },
+        "required": ["path"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "write_file",
+      "description": "Write a UTF-8 text file. Only allowed under eval_artifacts/ or /tmp/.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "content": { "type": "string" },
+          "mode": { "type": "string", "enum": ["overwrite", "append"], "nullable": true }
+        },
+        "required": ["path", "content"]
+      }
+    }
+  }
+]
+```
+
+</details>
+
+<details>
+<summary><strong>示例（同题）：Oracle 样例（oracle spec + oracle function）</strong></summary>
+
+该题的期望输出由 oracle 计算：
+
+```json
+{
+  "key": "top_level_entries",
+  "oracle": {
+    "fn": "top_level_entry_count",
+    "args": { "exclude": [".git", "eval_artifacts"], "exclude_hidden": true }
+  }
+}
+```
+
+Oracle 函数（实现示意）：
+
+```python
+def top_level_entry_count(*, repo_root: Path, exclude: Optional[List[str]] = None, exclude_hidden: bool = True) -> int:
+    exclude = exclude or []
+    names = []
+    for p in repo_root.iterdir():
+        if p.name in exclude:
+            continue
+        if exclude_hidden and p.name.startswith("."):
+            continue
+        names.append(p.name)
+    return len(names)
+```
+
+</details>
+
+<details>
+<summary><strong>示例（gpt-5.2）：prompt messages + tool_calls</strong></summary>
+
+我们会记录该题启动时的 OpenAI-style `messages`，以及实际执行过的 `tool_calls`。
+
+```json
+{
+  "prompt_messages": [
+    { "role": "system", "content": "<system prompt...>" },
+    { "role": "user", "content": "Repo: mmengine\\nTask: mmengine_task_001\\n\\nInstruction: ...\\n\\nCommand policy: ..." }
+  ],
+  "tool_calls": [
+    { "tool_name": "run_command", "tool_input": { "command": "ls -1" } },
+    { "tool_name": "run_command", "tool_input": { "command": "python3 - <<'PY' ... PY" } },
+    { "tool_name": "write_file", "tool_input": { "path": "eval_artifacts/answer.json", "mode": "overwrite" } }
+  ]
+}
+```
+
+</details>
+
+---
+
 ## L1 榜单（快照）
 
 > **说明**：大模型输出具有非确定性（non-deterministic）。这些结果仅用于参考与模型/工具链优化，
@@ -37,23 +196,11 @@ AgentGym 是用于评测大语言模型（含多模态大模型）作为 **tool-
 
 - [`docs/benchmarks/zh-CN/L1-leaderboard.md`](docs/benchmarks/zh-CN/L1-leaderboard.md)
 - [`docs/benchmarks/zh-CN/L1-detailed-results.md`](docs/benchmarks/zh-CN/L1-detailed-results.md)
+- 计分规则（怎么得分/怎么调权重占比）：[`docs/zh-CN/05-scoring-rules.md`](docs/zh-CN/05-scoring-rules.md)
 
 本次快照对应的**完整评测产物**（可用于复核与二次统计）请见 `L1-eval` 分支：
 
 - [`L1-eval` 分支的 `results/20260202/`](https://github.com/Abelmx/AgentGym/tree/L1-eval/results/20260202)
-
----
-
-## 一次评测会发生什么？
-
-1. 拉取需要评测的仓库（如 `opencompass/mmengine/internlm`）
-2. 逐题运行：模型只能通过工具调用执行 terminal 命令、读取文件、写入答案
-3. Oracle 自动判分：对照预定义规则计算期望结果，并判断模型输出是否匹配
-4. 生成结果与产物：
-   - `REPORT.md`：汇总报告（repo 维度、task 维度）
-   - 每题 `*.json`：结构化结果
-   - 每题 artifacts：模型写出的 `answer.json` / `answer.md` 等
-5.（可选，推荐）在 GitHub Actions 中自动创建 PR，把结果写回到你指定的分支
 
 ---
 
@@ -147,6 +294,7 @@ python3 tools/run_parallel_eval_tmux.py --config _local/parallel_eval_config.jso
 - [添加新 task（复用现有 oracle）](docs/zh-CN/02-add-tasks-existing-oracles.md)
 - [添加新 task + 自定义 Oracle function](docs/zh-CN/03-add-tasks-new-oracle.md)
 - [最佳实践：批量扩展 tasks & oracles（推荐用 AI-native 工具）](docs/zh-CN/04-best-practices-batch-tasks-oracles-with-ai.md)
+- [计分规则：0–100 分怎么计算？如何调整权重占比？](docs/zh-CN/05-scoring-rules.md)
 
 ---
 
@@ -178,7 +326,9 @@ python3 tools/run_parallel_eval_tmux.py --config _local/parallel_eval_config.jso
 - 即使没完全通过，也可能因为命令很少、命令都能正常执行而拿到一些分
 - 如果触发了危险命令或越权写入，会被扣分
 
-权重配置：`scoring/weights.yaml`（如果你希望强调“通过率”或“安全性”，可以调整这里）
+更完整的评分细则（公式 + 每项含义 + 调参方式 + 算分示例）请见：
+
+- [`docs/zh-CN/05-scoring-rules.md`](docs/zh-CN/05-scoring-rules.md)
 
 ---
 

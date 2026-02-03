@@ -84,9 +84,21 @@ def run_one_task(
 
     tool_calls: List[ToolCallRecord] = []
     model_final: Optional[str] = None
+    prompt_messages: Optional[List[Dict[str, Any]]] = None
 
     if dry_run:
-        transcript = TaskTranscript(task_id=task.id, tool_calls=tool_calls, safety_events=term.safety_events, model_final_message=None)
+        # Still include the prompt context so users can inspect task content.
+        prompt_messages = [
+            {"role": "system", "content": _load_system_prompt(system_prompt_path)},
+            {"role": "user", "content": _task_user_message(task)},
+        ]
+        transcript = TaskTranscript(
+            task_id=task.id,
+            prompt_messages=prompt_messages,
+            tool_calls=tool_calls,
+            safety_events=term.safety_events,
+            model_final_message=None,
+        )
         # Scoring in dry-run is still possible if user pre-populated answer.json.
         score = score_task(task, repo_root=repo_root, transcript=transcript, weights_path=weights_path)
         result_path = repo_root / "eval_artifacts" / "task_result.json"
@@ -97,6 +109,7 @@ def run_one_task(
         {"role": "system", "content": _load_system_prompt(system_prompt_path)},
         {"role": "user", "content": _task_user_message(task)},
     ]
+    prompt_messages = list(messages)
     tools = terminal_tools_schema()
 
     t0 = time.time()
@@ -221,7 +234,13 @@ def run_one_task(
                     )
 
             # Early-stop heuristic: if answer.json already satisfies oracle, stop.
-            transcript = TaskTranscript(task_id=task.id, tool_calls=tool_calls, safety_events=term.safety_events, model_final_message=None)
+            transcript = TaskTranscript(
+                task_id=task.id,
+                prompt_messages=prompt_messages,
+                tool_calls=tool_calls,
+                safety_events=term.safety_events,
+                model_final_message=None,
+            )
             try:
                 s = score_task(task, repo_root=repo_root, transcript=transcript, weights_path=weights_path)
                 if s.success:
@@ -239,7 +258,13 @@ def run_one_task(
         messages.append(assistant_msg2)
         break
 
-    transcript = TaskTranscript(task_id=task.id, tool_calls=tool_calls, safety_events=term.safety_events, model_final_message=model_final)
+    transcript = TaskTranscript(
+        task_id=task.id,
+        prompt_messages=prompt_messages,
+        tool_calls=tool_calls,
+        safety_events=term.safety_events,
+        model_final_message=model_final,
+    )
     score = score_task(task, repo_root=repo_root, transcript=transcript, weights_path=weights_path)
     result_path = repo_root / "eval_artifacts" / "task_result.json"
     write_task_result_json(result_path, task=task, score=score, transcript=transcript)
