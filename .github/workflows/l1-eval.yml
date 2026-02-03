@@ -38,6 +38,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # The PR-creation step manages its own auth; avoid persisting extraheaders.
+          persist-credentials: false
+          # Avoid safe.directory post-step issues (not needed on ubuntu-latest).
+          set-safe-directory: false
 
       - name: Setup Python
         uses: actions/setup-python@v5
